@@ -1,5 +1,5 @@
-const base =  "http://localhost:3000"
+const base = "http://localhost:3000";
 export const Urls = {
-  base,
+  home: `${base}/`,
   authCallback: `${base}/auth/callback`,
-}
+};

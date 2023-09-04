@@ -1,9 +1,20 @@
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { DateTime } from "luxon";
+import { redirect } from "next/navigation";
+import { Urls } from "@/urls";
 
 export default async function MoodLogs() {
   const supabase = createServerComponentClient({ cookies });
+
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (!session) {
+    redirect(Urls.home);
+  }
+
   const { data: moods } = await supabase.from("Moods").select();
 
   return (
@@ -14,12 +25,10 @@ export default async function MoodLogs() {
       ) : (
         <ul>
           {moods.map((mood) => (
-            <li key={mood.id}>
-              <div className="grid grid-cols-3">
-                <div>{DateTime.fromISO(mood.created_at).toLocaleString()}</div>
-                <div>{mood.mood}</div>
-                <div>{mood.note}</div>
-              </div>
+            <li key={mood.id} className="flex gap-5">
+              <div>{DateTime.fromISO(mood.created_at).toFormat("MMM d")}</div>
+              <div>{mood.mood}</div>
+              <div>{mood.note}</div>
             </li>
           ))}
         </ul>
