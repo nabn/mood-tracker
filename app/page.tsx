@@ -2,10 +2,10 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main>
       <ul>
         <li>
-          <Link href="/logs">Mood logs</Link>
+          <Link href="/logs">View mood logs</Link>
         </li>
       </ul>
     </main>
