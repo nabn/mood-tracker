@@ -9,7 +9,7 @@ import {
 import { useRouter } from "next/navigation";
 
 export default function AuthButtonClient({ session }: { session: Maybe<Session> }) {
-  const supabase = createClientComponentClient();
+  const supabase = createClientComponentClient<Database>();
   const router = useRouter();
 
   const handleSignin = async () => {

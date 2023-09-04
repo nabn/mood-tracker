@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { Urls } from "@/urls";
 
 export default async function MoodLogs() {
-  const supabase = createServerComponentClient({ cookies });
+  const supabase = createServerComponentClient<Database>({ cookies });
 
   const {
     data: { session },
