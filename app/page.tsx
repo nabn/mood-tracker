@@ -6,6 +6,7 @@ import { Routes } from "@/routes";
 import { Button } from "@/components/ui/button";
 import MoodLogEntry from "@/components/log-entry";
 import { PlusIcon } from "@radix-ui/react-icons";
+import { Toolbar } from "@/components/toolbar";
 
 // Entries per page
 // Note: pagination not implemented
@@ -51,7 +52,7 @@ export default async function MoodLogs() {
       ) : (
         <section className="p-2 md:mx-auto md:w-[72ch]">
           <Toolbar />
-          <h1 className="text-4xl py-4 px-2 text-center font-serif font-semibold">
+          <h1 className="text-4xl py-4 px-2 font-serif font-semibold">
             Mood logs
           </h1>
           <ul>
@@ -64,23 +65,5 @@ export default async function MoodLogs() {
         </section>
       )}
     </main>
-  );
-}
-
-function Toolbar() {
-  return (
-    <ul role="menubar" className="flex gap-2 justify-end">
-      <li>
-        <Button variant="link" asChild>
-          <Link href={Routes.logMood}>
-            <PlusIcon />
-            <span className="pl-2">Log your mood</span>
-          </Link>
-        </Button>
-      </li>
-      <li>
-        <AuthButtonServer />
-      </li>
-    </ul>
   );
 }

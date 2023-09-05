@@ -8,7 +8,7 @@ import {
 import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
 import { LoginWithGithub } from "./login-button";
-import { PinRightIcon } from "@radix-ui/react-icons";
+import { ExitIcon } from "@radix-ui/react-icons";
 
 export default function AuthButtonClient({
   session,
@@ -27,7 +27,7 @@ export default function AuthButtonClient({
     <>
       {session ? (
         <Button variant="link" onClick={handleSignout}>
-          <PinRightIcon />
+          <ExitIcon />
           <span className="pl-2">Logout</span>
         </Button>
       ) : (

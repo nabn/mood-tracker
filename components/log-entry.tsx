@@ -3,7 +3,7 @@ import { Mood } from "@/schema/mood";
 import { cva } from "class-variance-authority";
 import { DateTime } from "luxon";
 
-const moodVariants = cva("border rounded p-3 mb-2 max-w-[72ch]", {
+const moodVariants = cva("border rounded p-3 mb-2 max-w-[72ch] shadow-md", {
   variants: {
     variant: {
       sad: "bg-zinc-100",
