@@ -13,21 +13,21 @@ export interface Database {
         Row: {
           created_at: string
           id: string
-          mood: string
+          mood: Database["public"]["Enums"]["mood_enum"]
           note: string | null
           user_id: string
         }
         Insert: {
           created_at?: string
           id?: string
-          mood: string
+          mood: Database["public"]["Enums"]["mood_enum"]
           note?: string | null
           user_id: string
         }
         Update: {
           created_at?: string
           id?: string
-          mood?: string
+          mood?: Database["public"]["Enums"]["mood_enum"]
           note?: string | null
           user_id?: string
         }
@@ -76,7 +76,7 @@ export interface Database {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      mood_enum: "sad" | "angry" | "neutral" | "happy" | "excited"
     }
     CompositeTypes: {
       [_ in never]: never

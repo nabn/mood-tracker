@@ -1,13 +1,14 @@
 "use client";
 
-import { Routes } from "@/routes";
 import { Maybe } from "@/lib/type-utils";
 import {
   Session,
   createClientComponentClient,
 } from "@supabase/auth-helpers-nextjs";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Button } from "./ui/button";
+import { LoginWithGithub } from "./login-button";
+import { PinRightIcon } from "@radix-ui/react-icons";
 
 export default function AuthButtonClient({
   session,
@@ -17,13 +18,6 @@ export default function AuthButtonClient({
   const supabase = createClientComponentClient<Database>();
   const router = useRouter();
 
-  const handleSignin = async () => {
-    await supabase.auth.signInWithOAuth({
-      provider: "github",
-      options: { redirectTo: Routes.authCallback },
-    });
-  };
-
   const handleSignout = async () => {
     await supabase.auth.signOut();
     router.refresh();
@@ -32,16 +26,12 @@ export default function AuthButtonClient({
   return (
     <>
       {session ? (
-        <ul className="flex gap-5">
-          <li>
-            <Link href={Routes.logMood}>Log your mood</Link>
-          </li>
-          <li>
-            <button onClick={handleSignout}>Logout</button>
-          </li>
-        </ul>
+        <Button variant="link" onClick={handleSignout}>
+          <PinRightIcon />
+          <span className="pl-2">Logout</span>
+        </Button>
       ) : (
-        <button onClick={handleSignin}>Login</button>
+        <LoginWithGithub client={supabase} />
       )}
     </>
   );

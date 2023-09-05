@@ -1,8 +1,15 @@
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import { DateTime } from "luxon";
-import { redirect } from "next/navigation";
+import AuthButtonServer from "@/components/auth-button-server";
+import Link from "next/link";
 import { Routes } from "@/routes";
+import { Button } from "@/components/ui/button";
+import MoodLogEntry from "@/components/log-entry";
+import { PlusIcon } from "@radix-ui/react-icons";
+
+// Entries per page
+// Note: pagination not implemented
+const PAGE_SIZE = 7;
 
 export default async function MoodLogs() {
   const supabase = createServerComponentClient<Database>({ cookies });
@@ -11,32 +18,69 @@ export default async function MoodLogs() {
     data: { session },
   } = await supabase.auth.getSession();
 
-  if (!session) {
-    redirect(Routes.home);
-  }
-
   const { data: moods } = await supabase
     .from("moods")
-    .select("*, author: profiles(*)");
+    .select("*")
+    .limit(PAGE_SIZE);
 
   return (
-    <main className="min-h-screen p-24">
-      <h1 className="text-6xl pb-10 font-serif">Mood logs</h1>
-      {!moods ? (
-        <p>No logs yet</p>
+    <main>
+      {!session ? (
+        <section className="p-8 h-[100vh] flex flex-col items-center justify-center">
+          <p className="pb-2 text-xl">Log in to view your mood logs</p>
+          <AuthButtonServer />
+        </section>
+      ) : !moods ? (
+        <section className="p-2 md:mx-auto md:w-[72ch]">
+          <Toolbar />
+          <div className="flex flex-col items-center">
+            <h1 className="text-2xl text-zinc-500 py-4 px-2">
+              Nothing logged yet
+            </h1>
+            <p className="text-zinc-500 pb-8">
+              Once you have added some mood logs, they will appear here.
+            </p>
+            <Link href={Routes.logMood}>
+              <Button>
+                <PlusIcon />
+                <span className="pl-2">Add a mood log</span>
+              </Button>
+            </Link>
+          </div>
+        </section>
       ) : (
-        <ul>
-          {moods.map((mood) => (
-            <li key={mood.id} className="flex gap-5">
-              <div>{DateTime.fromISO(mood.created_at).toFormat("MMM d")}</div>
-              <div>{mood.mood}</div>
-              <div>{mood.note}</div>
-              <div>{mood.author?.username}</div>
-            </li>
-          ))}
-        </ul>
+        <section className="p-2 md:mx-auto md:w-[72ch]">
+          <Toolbar />
+          <h1 className="text-4xl py-4 px-2 text-center font-serif font-semibold">
+            Mood logs
+          </h1>
+          <ul>
+            {moods.map((mood) => (
+              <li key={mood.id}>
+                <MoodLogEntry key={mood.id} mood={mood} />
+              </li>
+            ))}
+          </ul>
+        </section>
       )}
     </main>
   );
 }
 
+function Toolbar() {
+  return (
+    <ul role="menubar" className="flex gap-2 justify-end">
+      <li>
+        <Button variant="link" asChild>
+          <Link href={Routes.logMood}>
+            <PlusIcon />
+            <span className="pl-2">Log your mood</span>
+          </Link>
+        </Button>
+      </li>
+      <li>
+        <AuthButtonServer />
+      </li>
+    </ul>
+  );
+}
