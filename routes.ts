@@ -1,7 +1,7 @@
-const base = "http://localhost:3000";
+const base = process.env.NEXT_PUBLIC_ROOT_URL
 export const Routes = {
-  home: `${base}/`,
-  logMood: `${base}/log-mood`,
+  home: `/`,
+  logMood: `/log-mood`,
   api: {
     authCallback: `${base}/api/auth-callback`,
     moodLog: `${base}/api/mood-log`,
