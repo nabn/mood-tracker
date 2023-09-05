@@ -22,10 +22,11 @@ export default async function MoodLogs() {
   const { data: moods } = await supabase
     .from("moods")
     .select("*")
+    .order("created_at", { ascending: false })
     .limit(PAGE_SIZE);
 
   return (
-    <main>
+    <main className="p-2 lg:px-20 md:w-[72ch]">
       {!session ? (
         <section className="p-8 h-[100vh] flex flex-col items-center justify-center">
           <p className="pb-2 text-xl">Log in to view your mood logs</p>

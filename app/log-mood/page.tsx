@@ -1,4 +1,14 @@
+"use client";
 import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import {
   Select,
   SelectContent,
@@ -7,58 +17,91 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Routes as Routes } from "@/routes";
+import { Routes } from "@/routes";
+import { moodLogFormSchema, type MoodLogFormFields } from "@/schema/mood";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { PaperPlaneIcon } from "@radix-ui/react-icons";
-import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 
 export default function LogMood() {
-  async function logMood(formData: FormData) {
-    "use server";
-    const mood = String(formData.get("mood"));
-    const note = String(formData.get("note"));
-    const supabase = createServerActionClient<Database>({ cookies });
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (user) {
-      await supabase.from("moods").insert({ mood, note, user_id: user?.id });
-    }
-    redirect(Routes.home);
+  const router = useRouter();
+  const form = useForm<MoodLogFormFields>({
+    resolver: zodResolver(moodLogFormSchema),
+    defaultValues: {},
+  });
+
+  async function logMood(fields: MoodLogFormFields) {
+    await fetch(Routes.api.moodLog, {
+      method: "POST",
+      body: JSON.stringify(fields),
+    }).then((res) => res.json());
+
+    router.refresh();
+    router.push(Routes.home);
   }
 
   return (
-    <form action={logMood} className="mt-10 flex flex-col gap-4 items-start">
-      <h1 className="text-4xl text-zinc-700 py-4 font-serif font-semibold">
-        Log your mood
-      </h1>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(logMood)}>
+        <h1 className="text-4xl text-zinc-700 pt-8 font-serif font-semibold">
+          Log your mood
+        </h1>
+        <p className="text-zinc-500 py-2">
+          Take a second to log how you&apos;ve felt today.
+        </p>
 
-      <label htmlFor="mood" className="text-zinc-500">
-        How are you feeling today?
-      </label>
-      <Select name="mood">
-        <SelectTrigger>
-          <SelectValue placeholder="Select an option" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="sad">Sad</SelectItem>
-          <SelectItem value="Angry">Angry</SelectItem>
-          <SelectItem value="neutral">Neutral</SelectItem>
-          <SelectItem value="happy">Happy</SelectItem>
-          <SelectItem value="excited">Excited</SelectItem>
-        </SelectContent>
-      </Select>
+        <br className="my-8" />
+        <FormField
+          control={form.control}
+          name="mood"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Mood</FormLabel>
+              <FormDescription>
+                How has your mood been today overall?
+              </FormDescription>
+              <FormControl>
+                <Select {...field} onValueChange={field.onChange}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a mood" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="sad">Sad</SelectItem>
+                    <SelectItem value="angry">Angry</SelectItem>
+                    <SelectItem value="neutral">Neutral</SelectItem>
+                    <SelectItem value="happy">Happy</SelectItem>
+                    <SelectItem value="excited">Excited</SelectItem>
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-      <label htmlFor="note" className="text-zinc-500">
-        Add a note
-      </label>
-      <Textarea name="note" placeholder="Add a note.." className="h-44" />
+        <br className="my-8" />
 
-      <Button type="submit">
-        <PaperPlaneIcon />
-        <span className="pl-2">Submit</span>
-      </Button>
-    </form>
+        <FormField
+          control={form.control}
+          name="note"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Add a note </FormLabel>
+              <FormDescription>Max 200 characters</FormDescription>
+              <FormControl>
+                <Textarea {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <Button type="submit" className="mt-8">
+          <PaperPlaneIcon />
+          <span className="pl-2">Submit</span>
+        </Button>
+      </form>
+    </Form>
   );
 }

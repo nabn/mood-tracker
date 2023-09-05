@@ -7,7 +7,7 @@ export function LoginWithGithub({ client }: { client: SupabaseClient }) {
   const handleSignin = async () => {
     await client.auth.signInWithOAuth({
       provider: "github",
-      options: { redirectTo: Routes.authCallback },
+      options: { redirectTo: Routes.api.authCallback },
     });
   };
 

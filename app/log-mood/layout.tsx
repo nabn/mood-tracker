@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function Layout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
-      <body className="p-2 lg:px-20 md:w-[72ch]">
+      <body className="p-3 md:p-10 md:w-[72ch]">
         <Toolbar showLog={false} />
         {children}
       </body>
