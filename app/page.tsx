@@ -32,7 +32,7 @@ export default async function MoodLogs() {
           <AuthButtonServer />
         </section>
       ) : !moods ? (
-        <section className="p-2 md:mx-auto md:w-[72ch]">
+        <section>
           <Toolbar />
           <div className="flex flex-col items-center">
             <h1 className="text-2xl text-zinc-500 py-4 px-2">
@@ -50,7 +50,7 @@ export default async function MoodLogs() {
           </div>
         </section>
       ) : (
-        <section className="p-2 md:mx-auto md:w-[72ch]">
+        <section>
           <Toolbar />
           <h1 className="text-4xl py-4 px-2 font-serif font-semibold">
             Mood logs
