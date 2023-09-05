@@ -32,7 +32,7 @@ export default async function MoodLogs() {
           <p className="pb-2 text-xl">Log in to view your mood logs</p>
           <AuthButtonServer />
         </section>
-      ) : !moods ? (
+      ) : !moods || moods.length == 0 ? (
         <section>
           <Toolbar />
           <div className="flex flex-col items-center">
