@@ -1,6 +1,8 @@
 # Mood tracker
 A simple mood tracker application built with Next.js and Supabase
 
+<img width=400 src=https://github.com/nabn/mood-tracker/assets/1693287/2497dfcd-1033-4671-bb5e-9430ff97fce0>
+
 - This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 - The new app directory from NextJS 13 is used along with server components.
 - [Supabase](https://supabase.com/) is used for the db and authentication.
