@@ -1,8 +1,8 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { twMerge } from "tailwind-merge";
 import AuthButtonServer from "@/components/auth-button-server";
+import { cn } from "@/lib/utils";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={twMerge(inter.className, "px-24 min-h-screen")}>
+      <body className={cn(inter.className, "px-24 min-h-screen")}>
         <nav className="h-24 flex items-center justify-end">
           <AuthButtonServer />
         </nav>

@@ -15,7 +15,9 @@ export default async function MoodLogs() {
     redirect(Urls.home);
   }
 
-  const { data: moods } = await supabase.from("moods").select("*, profiles(*)");
+  const { data: moods } = await supabase
+    .from("moods")
+    .select("*, author: profiles(*)");
 
   return (
     <main className="min-h-screen p-24">
@@ -29,7 +31,7 @@ export default async function MoodLogs() {
               <div>{DateTime.fromISO(mood.created_at).toFormat("MMM d")}</div>
               <div>{mood.mood}</div>
               <div>{mood.note}</div>
-              <div>{mood.profiles?.username}</div>
+              <div>{mood.author?.username}</div>
             </li>
           ))}
         </ul>
