@@ -1,6 +1,6 @@
 "use client";
 
-import { Urls } from "@/urls";
+import { Routes } from "@/routes";
 import { Maybe } from "@/lib/type-utils";
 import {
   Session,
@@ -20,7 +20,7 @@ export default function AuthButtonClient({
   const handleSignin = async () => {
     await supabase.auth.signInWithOAuth({
       provider: "github",
-      options: { redirectTo: Urls.authCallback },
+      options: { redirectTo: Routes.authCallback },
     });
   };
 
@@ -34,7 +34,7 @@ export default function AuthButtonClient({
       {session ? (
         <ul className="flex gap-5">
           <li>
-            <Link href={Urls.logMood}>Log your mood</Link>
+            <Link href={Routes.logMood}>Log your mood</Link>
           </li>
           <li>
             <button onClick={handleSignout}>Logout</button>

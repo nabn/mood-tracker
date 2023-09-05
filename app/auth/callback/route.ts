@@ -1,4 +1,3 @@
-import { Urls } from "@/urls";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { NextResponse, type NextRequest } from "next/server";
@@ -11,5 +10,5 @@ export async function GET(request: NextRequest) {
     await supabase.auth.exchangeCodeForSession(code);
   }
 
-  return NextResponse.redirect(Urls.logs);
+  return NextResponse.redirect(requestUrl.origin);
 }

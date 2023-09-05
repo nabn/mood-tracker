@@ -7,7 +7,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Urls } from "@/urls";
+import { Routes as Routes } from "@/routes";
 import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -15,8 +15,8 @@ import { redirect } from "next/navigation";
 export default function LogMood() {
   async function logMood(formData: FormData) {
     "use server";
-    const mood = formData.get("mood");
-    const note = formData.get("note");
+    const mood = String(formData.get("mood"));
+    const note = String(formData.get("note"));
     const supabase = createServerActionClient<Database>({ cookies });
     const {
       data: { user },
@@ -24,7 +24,7 @@ export default function LogMood() {
     if (user) {
       await supabase.from("moods").insert({ mood, note, user_id: user?.id });
     }
-    redirect(Urls.logs);
+    redirect(Routes.home);
   }
 
   return (
