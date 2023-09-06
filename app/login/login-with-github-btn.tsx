@@ -1,6 +1,5 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Routes } from "@/routes";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
@@ -10,7 +9,7 @@ export function LoginWithGithub() {
   const handleSignin = async () => {
     await supabase.auth.signInWithOAuth({
       provider: "github",
-      options: { redirectTo: Routes.api.authCallback },
+      options: { redirectTo: `${location.origin}/api/auth-callback`},
     });
   };
 
