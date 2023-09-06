@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   description: "A simple mood logger",
 };
 
+export const dynamic = 'force-dynamic'
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
