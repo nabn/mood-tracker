@@ -1,11 +1,14 @@
+"use client";
+import { Button } from "@/components/ui/button";
 import { Routes } from "@/routes";
-import type { SupabaseClient } from "@supabase/supabase-js";
-import { Button } from "./ui/button";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
-export function LoginWithGithub({ client }: { client: SupabaseClient }) {
+export function LoginWithGithub() {
+  const supabase = createClientComponentClient<Database>();
+
   const handleSignin = async () => {
-    await client.auth.signInWithOAuth({
+    await supabase.auth.signInWithOAuth({
       provider: "github",
       options: { redirectTo: Routes.api.authCallback },
     });

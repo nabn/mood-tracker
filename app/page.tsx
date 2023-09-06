@@ -1,12 +1,17 @@
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import AuthButtonServer from "@/components/auth-button-server";
 import Link from "next/link";
 import { Routes } from "@/routes";
 import { Button } from "@/components/ui/button";
 import MoodLogEntry from "@/components/log-entry";
 import { PlusIcon } from "@radix-ui/react-icons";
-import { Toolbar } from "@/components/toolbar";
+import { Metadata } from "next";
+import { redirect } from "next/navigation";
+
+export const metadata: Metadata = {
+  title: "Mood Logger",
+  description: "A simple mood logger",
+};
 
 // Entries per page
 // Note: pagination not implemented
@@ -19,6 +24,10 @@ export default async function MoodLogs() {
     data: { session },
   } = await supabase.auth.getSession();
 
+  if (!session) {
+    redirect(Routes.login);
+  }
+
   const { data: moods } = await supabase
     .from("moods")
     .select("*")
@@ -26,15 +35,13 @@ export default async function MoodLogs() {
     .limit(PAGE_SIZE);
 
   return (
-    <main className="p-2 lg:px-20 md:w-[72ch]">
-      {!session ? (
-        <section className="p-8 h-[100vh] flex flex-col items-center justify-center">
-          <p className="pb-2 text-xl">Log in to view your mood logs</p>
-          <AuthButtonServer />
-        </section>
-      ) : !moods || moods.length == 0 ? (
+    <main>
+      {!moods || moods.length == 0 ? (
         <section>
-          <Toolbar />
+          <Link href={Routes.logMood}>
+            <PlusIcon />
+            <span className="pl-2">Log your mood</span>
+          </Link>
           <div className="flex flex-col items-center">
             <h1 className="text-2xl text-zinc-500 py-4 px-2">
               Nothing logged yet
@@ -52,10 +59,9 @@ export default async function MoodLogs() {
         </section>
       ) : (
         <section>
-          <Toolbar />
-          <h1 className="text-4xl py-4 px-2 font-serif font-semibold">
-            Mood logs
-          </h1>
+          <h2 className="text-2xl py-4 font-semibold">
+            Your recent mood logs
+          </h2>
           <ul>
             {moods.map((mood) => (
               <li key={mood.id}>

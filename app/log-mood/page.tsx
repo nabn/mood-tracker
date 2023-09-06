@@ -44,7 +44,7 @@ export default function LogMood() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(logMood)}>
-        <h1 className="text-4xl text-zinc-700 pt-8 font-serif font-semibold">
+        <h1 className="text-2xl text-zinc-700 font-semibold">
           Log your mood
         </h1>
         <p className="text-zinc-500 py-2">
