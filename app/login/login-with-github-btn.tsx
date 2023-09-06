@@ -8,10 +8,15 @@ export function LoginWithGithub() {
   const supabase = createClientComponentClient<Database>();
 
   const handleSignin = async () => {
-    await supabase.auth.signInWithOAuth({
-      provider: "github",
-      options: { redirectTo: Routes.api.authCallback },
-    });
+    try {
+      await supabase.auth.signInWithOAuth({
+        provider: "github",
+        options: { redirectTo: `${location.origin}${Routes.api.authCallback}` },
+      });
+    } catch (e) {
+      console.log("sign in failed");
+      console.error(e);
+    }
   };
 
   return (
