@@ -9,16 +9,10 @@ export function LoginWithGithub() {
 
   const handleSignin = async () => {
     try {
-      console.log(
-        "should redir to: ",
-        `${location.origin}${Routes.api.authCallback}`
-      );
-      const data = await supabase.auth.signInWithOAuth({
+      await supabase.auth.signInWithOAuth({
         provider: "github",
         options: { redirectTo: `${location.origin}${Routes.api.authCallback}` },
       });
-
-      console.log("data is data", JSON.stringify(data));
     } catch (e) {
       console.log("sign in failed");
       console.error(e);
