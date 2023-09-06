@@ -13,13 +13,15 @@ export function LoginWithGithub() {
         "should redir to: ",
         `${location.origin}${Routes.api.authCallback}`
       );
-      await supabase.auth.signInWithOAuth({
+      const data = await supabase.auth.signInWithOAuth({
         provider: "github",
         options: { redirectTo: `${location.origin}${Routes.api.authCallback}` },
       });
+
+      console.log("data is data", JSON.stringify(data));
     } catch (e) {
       console.log("sign in failed");
-      console.error(e)
+      console.error(e);
     }
   };
 

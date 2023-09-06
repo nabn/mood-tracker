@@ -8,11 +8,15 @@ export const dynamic = "force-dynamic";
 export default async function Login() {
   const supabase = createServerComponentClient<Database>({ cookies });
 
+  console.log('am here')
+
   const {
     data: { session },
   } = await supabase.auth.getSession();
 
+  console.log("session", session);
   if (session) {
+    console.log("Redirecting to home", Routes.home);
     redirect(Routes.home);
   }
 
