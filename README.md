@@ -1,4 +1,5 @@
 # Mood tracker
+[Preview deployment: https://mood-tracker-delta.vercel.app/](https://mood-tracker-delta.vercel.app/)
 A simple mood tracker application built with Next.js and Supabase
 
 <img width=400 src=https://github.com/nabn/mood-tracker/assets/1693287/2497dfcd-1033-4671-bb5e-9430ff97fce0>
