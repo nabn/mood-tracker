@@ -10,7 +10,7 @@ const moodVariants = cva("border rounded p-3 mb-2 max-w-[72ch] shadow-md", {
       angry: "bg-red-100",
       neutral: "bg-neutral-100",
       happy: "bg-teal-100",
-      excited: "bg-fuschia-100",
+      excited: "bg-fuchsia-100",
     },
   },
 });
